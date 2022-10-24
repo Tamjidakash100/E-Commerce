@@ -62,5 +62,45 @@ namespace E_Commerce.Areas.Admin.Controllers
             }
             return View(category);
         }
+        //Delete Get Action method
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var category = _db.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+        }
+        //Delete Post Action method
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int? id, Category categories)
+        {
+            if (id==null)
+            {
+                return NotFound();
+            }
+            if (id!=categories.Id)
+            {
+                return NotFound();
+            }
+            var category = _db.Categories.Find(id);
+            if (category==null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                _db.Remove(category);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(category);
+        }
     }
 }
