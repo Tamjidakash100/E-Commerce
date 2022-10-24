@@ -1,0 +1,33 @@
+﻿@using E_Commerce.Models
+@model IEnumerable<Tags>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<br>
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-info">Tag List</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Create" class="btn btn-info"><i class="fa fa-plus"></i>&nbsp;New Tag</a>
+    </div>
+</div>
+<br>
+<div>
+    <table class="table table-striped border">
+        <tr class="table-info">
+            <th>
+                @Html.DisplayNameFor(c=>c.Tag)
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Tag</td>
+                <partial name="_ButtonPartial" model="@item.Id">
+            </tr>
+        }
+    </table>
+</div>

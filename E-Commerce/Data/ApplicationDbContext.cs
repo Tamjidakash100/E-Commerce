@@ -11,5 +11,6 @@ namespace E_Commerce.Data
         {
         }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Tags> Tags { get; set; }
     }
 }
