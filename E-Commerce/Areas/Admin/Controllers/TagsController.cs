@@ -36,5 +36,72 @@ namespace E_Commerce.Areas.Admin.Controllers
             }
             return View(tags);
         }
+        //Edit Get Action method
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var tag = _db.Tags.Find(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+            return View(tag);
+        }
+        //Edit Post Action method
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Tags tags)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Update(tags);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(tags);
+        }
+        //Delete Get Action method
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var tag = _db.Tags.Find(id);
+            if (tag == null)
+            {
+                return NotFound();
+            }
+            return View(tag);
+        }
+        //Delete Post Action method
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Delete(int? id, Tags tags)
+        {
+            if (id==null)
+            {
+                return NotFound();
+            }
+            if (id!=tags.Id)
+            {
+                return NotFound();
+            }
+            var tag = _db.Categories.Find(id);
+            if (tag==null)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                _db.Remove(tags);
+                await _db.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            return View(tags);
+        }
     }
 }
