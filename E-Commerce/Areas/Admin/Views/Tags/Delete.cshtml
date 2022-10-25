@@ -1,23 +1,23 @@
-﻿@model E_Commerce.Models.Category
+﻿@model E_Commerce.Models.Tags
 @{
     ViewData["Title"] = "Delete";
 }
 
 <br />
-<h2 class="text-info">Delete Category</h2>
+<h2 class="text-info">Delete Tags</h2>
 <form asp-action="Delete" method="post">
     <div class="p-4 rounded border">
-        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="Id" />
         <div asp-validation-summary="ModelOnly" class="text-danger">
         </div>
         <div class="form-group row">
             <div class="col-2">
-                <label asp-for="CategoryName"></label>
+                <label asp-for="Tag"></label>
             </div>
             <div class="col-5">
-                <input asp-for="CategoryName" readonly class="form-control" />
+                <input asp-for="Tag" readonly class="form-control" />
             </div>
-            <span asp-validation-for="CategoryName" class="text-danger"></span>
+            <span asp-validation-for="Tag" class="text-danger"></span>
             <div class="form-group">
                 <input type="submit" class="btn btn-danger" value="Delete" />
                 <a asp-action="Index" class="btn btn-success">Back to list</a>
