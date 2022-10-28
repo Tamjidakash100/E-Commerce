@@ -31,6 +31,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 _db.Categories.Add(category);
                 await _db.SaveChangesAsync();
+                TempData["save"]= "Saved Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -58,6 +59,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 _db.Update(category);
                 await _db.SaveChangesAsync();
+                TempData["update"]= "Updated Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -98,6 +100,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 _db.Remove(category);
                 await _db.SaveChangesAsync();
+                TempData["delete"]= "Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
