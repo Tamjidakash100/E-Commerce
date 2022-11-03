@@ -1,8 +1,6 @@
-﻿using Microsoft.Build.Framework;
-using System.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
+using System.Xml.Linq;
 
 namespace E_Commerce.Models
 {
@@ -13,21 +11,22 @@ namespace E_Commerce.Models
         public string Name { get; set; }
         [Required]
         public decimal Price { get; set; }
-        public string Image { get; set; }
-        [Display(Name="Product Color")]
+        public string? Image { get; set; }
+        [Display(Name = "Product Color")]
         public string ProductColor { get; set; }
         [Required]
-        [Display(Name="Available")]
+        [Display(Name = "Available")]
         public bool IsAvailable { get; set; }
+
+        [Display(Name = "Category")]
         [Required]
-        [Display(Name="Category")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public Category Category { get; set; }
+        public virtual Category? Category { get; set; }
+        [Display(Name = "Tag")]
         [Required]
-        [Display(Name="Special Tag")]
         public int TagId { get; set; }
         [ForeignKey("TagId")]
-        public Tags Tags { get; set; }
+        public virtual Tags? Tags { get; set; }
     }
 }

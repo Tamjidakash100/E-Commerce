@@ -32,6 +32,9 @@
             <th>
                 @Html.DisplayNameFor(c=>c.CategoryId)
             </th>
+            <th>
+                @Html.DisplayNameFor(c=>c.TagId)
+            </th>
             <th></th>
         </tr>
         @foreach (var item in Model)
@@ -42,6 +45,7 @@
                 <td>@item.ProductColor</td>
                 <td>@item.IsAvailable</td>
                 <td>@item.Category.CategoryName</td>
+                <td>@item.Tags.Tag</td>
                 <partial name="_ButtonPartial" model="@item.Id">
             </tr>
         }

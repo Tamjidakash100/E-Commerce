@@ -4,7 +4,7 @@
 
 namespace E_Commerce.Data.Migrations
 {
-    public partial class AddProductToDB : Migration
+    public partial class AddProductsTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,8 +16,8 @@ namespace E_Commerce.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Image = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProductColor = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProductColor = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     TagId = table.Column<int>(type: "int", nullable: false)
