@@ -63,6 +63,33 @@ namespace E_Commerce.Areas.Admin.Controllers
             }
             return View(tags);
         }
+        //GET Details Action Method
+
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var Tag = _db.Tags.Find(id);
+            if (Tag == null)
+            {
+                return NotFound();
+            }
+            return View(Tag);
+        }
+
+        //POST Details Action Method
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Details(Tags Tags)
+        {
+            return RedirectToAction(nameof(Index));
+
+        }
+
         //Delete Get Action method
         public ActionResult Delete(int? id)
         {
