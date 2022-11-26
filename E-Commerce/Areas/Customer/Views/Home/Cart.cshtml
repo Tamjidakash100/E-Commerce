@@ -1,0 +1,48 @@
+﻿@using E_Commerce.Models
+@model List<Products>
+@{
+    ViewData["Title"] = "Cart";
+}
+
+<h1>Your Cart</h1>
+
+<br/>
+<div class="row">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Product Color</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in @Model){
+                <tr>
+                    <td>
+                        <img src="~/@item.Image" width="200px" height="150px"/>
+                    </td>
+                    <td>@item.Name</td>
+                    <td>@item.Price</td>
+                    <td>@item.Category.CategoryName</td>
+                    <td>@item.ProductColor</td>
+                    <td>
+                        <a asp-action="Remove" asp-route-id="@item.Id" asp-controller="Home" asp-area="Customer" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row">
+    <div class="col-6">
+        <a asp-action="Index" asp-controller="Home" class="btn btn-info">Back To Home</a>
+    </div>
+    <div class="col-6 text-right">
+        <h3>Grand Total : @Model.Sum(c=>c.Price) Taka</h3>
+        <a asp-action="Index" asp-controller="Home" class="btn btn-info">Checkout</a>
+    </div>
+</div>

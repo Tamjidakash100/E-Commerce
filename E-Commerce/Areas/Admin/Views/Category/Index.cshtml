@@ -30,22 +30,3 @@
         }
     </table>
 </div>
-@section scripts{
-    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            var save= '@TempData["save"]'
-            if(save!=''){
-                alertify.success(save);
-            }
-            var update = '@TempData["update"]'
-            if (update!='') {
-                alertify.success(update);
-            }
-            var delete= '@TempData["delete"]'
-            if(delete!=''){
-                alertify.error(delete);
-            }
-        })
-    </script>
-}

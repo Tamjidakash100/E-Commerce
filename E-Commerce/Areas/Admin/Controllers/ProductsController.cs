@@ -17,10 +17,32 @@ namespace E_Commerce.Areas.Admin.Controllers
             _db=db;
             _he=he;
         }
-
+        //Get index action method
         public IActionResult Index()
         {
             return View(_db.Products.Include(p => p.Category).Include(t => t.Tags).ToList());
+        }
+        //Post index action method
+        [HttpPost]
+        public IActionResult index(decimal? LowAmount, decimal? HighAmount)
+        {
+            var products = _db.Products.Include(p => p.Category).Include(c => c.Tags).Where(c => c.Price>=LowAmount && c.Price <= HighAmount).ToList();
+            if(LowAmount==null)
+            {
+                products = _db.Products.Include(p => p.Category).Include(c => c.Tags).Where(c =>c.Price <= HighAmount).ToList();
+            }
+            if (HighAmount==null)
+            {
+                products = _db.Products.Include(p => p.Category).Include(c => c.Tags).Where(c => c.Price >= LowAmount).ToList();
+            }
+            if(LowAmount==null && HighAmount==null)
+            {
+                if (LowAmount==null || HighAmount==null)
+                {
+                    products = _db.Products.Include(p => p.Category).Include(c => c.Tags).ToList();
+                }
+            }
+            return View(products);
         }
         //Create get action method
         public IActionResult Create()
@@ -36,6 +58,14 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var match= _db.Products.FirstOrDefault(c=>c.Name==products.Name);
+                if (match!=null)
+                {
+                    ViewBag.message = "This Product Already Exists!!!";
+                    ViewData["productTypeId"]=new SelectList(_db.Categories.ToList(), "Id", "CategoryName");
+                    ViewData["TagId"]=new SelectList(_db.Tags.ToList(), "Id", "Tag");
+                    return View(products);
+                }
 
                 if (image!=null)
                 {
@@ -76,6 +106,14 @@ namespace E_Commerce.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                var match = _db.Products.FirstOrDefault(c => c.Name==products.Name);
+                if (match!=null)
+                {
+                    ViewBag.message ="This Product Already Exists!!!";
+                    ViewData["productTypeId"]=new SelectList(_db.Categories.ToList(), "Id", "CategoryName");
+                    ViewData["TagId"]=new SelectList(_db.Tags.ToList(), "Id", "Tag");
+                    return View(products);
+                }
 
                 if (image!=null)
                 {
@@ -107,6 +145,40 @@ namespace E_Commerce.Areas.Admin.Controllers
                 return NotFound();
             }
             return View(product);
+        }
+        //GET Delete action method
+        public ActionResult Delete(int? id)
+        {
+            if (id==null)
+            {
+                return NotFound();
+            }
+            var product = _db.Products.Include(c => c.Category).Include(c => c.Tags).Where(c => c.Id==id).FirstOrDefault();
+            if (product==null)
+            {
+                return NotFound();
+            }
+            
+            return View(product);
+
+        }
+        //Post Delete action method
+        [HttpPost]
+        [ActionName("Delete")]
+        public async Task<IActionResult> DeleteConfirm(int? id)
+        {
+            if (id==null)
+            {
+                return NotFound();
+            }
+            var product = _db.Products.FirstOrDefault(c=>c.Id==id);
+            if (product==null)
+            {
+                return NotFound();
+            }
+            _db.Products.Remove(product);
+            await _db.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
     }
     
