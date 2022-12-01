@@ -4,6 +4,7 @@ using E_Commerce.Utility;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using X.PagedList;
 
 namespace E_Commerce.Areas.Customer.Controllers
 {
@@ -20,9 +21,9 @@ namespace E_Commerce.Areas.Customer.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
-            return View(_db.Products.Include(c=> c.Category).Include(c=>c.Tags).ToList());
+            return View(_db.Products.Include(c=> c.Category).Include(c=>c.Tags).ToList().ToPagedList(pageNumber:page??1,pageSize:10));
         }
         //Get Details action method
         public IActionResult Details(int? id)
