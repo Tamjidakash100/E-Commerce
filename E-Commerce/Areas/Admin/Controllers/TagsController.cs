@@ -32,6 +32,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 _db.Tags.Add(tags);
                 await _db.SaveChangesAsync();
+                TempData["Save"]="Saved Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(tags);
@@ -59,6 +60,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             {
                 _db.Update(tags);
                 await _db.SaveChangesAsync();
+                TempData["Edit"]="Updated Successfully";
                 return RedirectToAction(nameof(Index));
             }
             return View(tags);
@@ -107,28 +109,26 @@ namespace E_Commerce.Areas.Admin.Controllers
         //Delete Post Action method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int? id, Tags tags)
+        [ActionName("Delete")]
+        public async Task<IActionResult> Remove(int? id)
         {
             if (id==null)
             {
                 return NotFound();
             }
-            if (id!=tags.Id)
-            {
-                return NotFound();
-            }
-            var tag = _db.Categories.Find(id);
+            var tag = _db.Tags.FirstOrDefault(c=>c.Id==id);
             if (tag==null)
             {
                 return NotFound();
             }
             if (ModelState.IsValid)
             {
-                _db.Remove(tags);
+                _db.Remove(tag);
                 await _db.SaveChangesAsync();
+                TempData["Delete"]="Deleted Successfully";
                 return RedirectToAction(nameof(Index));
             }
-            return View(tags);
+            return View(tag);
         }
     }
 }

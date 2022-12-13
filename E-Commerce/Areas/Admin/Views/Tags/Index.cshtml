@@ -31,3 +31,36 @@
         }
     </table>
 </div>
+@section scripts
+{
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var save = '@TempData["Save"]'
+            if (save != '') {
+                alertify.success(save);
+            }
+        })
+    </script>
+    <script>
+        $(document).ready(function (){
+
+            var edit = '@TempData["Edit"]';
+            if (edit != '') {
+                alertify.success(edit);
+            }
+            
+        })
+    </script>
+    <script>
+        $(document).ready(function (){
+
+            var delete = '@TempData["Delete"]';
+            if (delete!= '') {
+                alertify.success(delete);
+            }
+            
+        })
+    </script>
+        
+}

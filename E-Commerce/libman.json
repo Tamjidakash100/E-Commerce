@@ -6,12 +6,20 @@
       "library": "bootstrap@5.2.2",
       "destination": "wwwroot/lib/bootstrap/"
     },
-    "libraries",
-    :,
-    [
-      {
-        "library": "jquery@3.6.1",
-        "destination": "wwwroot/lib/jquery/"
-      }
-    ]
+
+    {
+      "library": "jquery@3.6.1",
+      "destination": "wwwroot/lib/jquery/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validate@1.19.5",
+      "destination": "wwwroot/jquery-validate/"
+    },
+    {
+      "provider": "cdnjs",
+      "library": "jquery-validation-unobtrusive@4.0.0",
+      "destination": "wwwroot/jquery-validation-unobtrusive/"
+    }
+]
 }
