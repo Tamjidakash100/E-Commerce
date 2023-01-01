@@ -19,8 +19,6 @@ namespace E_Commerce.Areas.Customer.Controllers
         //Get checkout action method
         public IActionResult Checkout()
         {
-            var stripePublishKey = System.Configuration.ConfigurationManager.AppSettings["sourcePath"];
-            ViewBag.StripePublishKey = stripePublishKey;
             return View();
         }
         //Post Checkout action method

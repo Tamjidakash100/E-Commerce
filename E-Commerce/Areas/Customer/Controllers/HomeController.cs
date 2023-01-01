@@ -1,6 +1,7 @@
 ﻿using E_Commerce.Data;
 using E_Commerce.Models;
 using E_Commerce.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
@@ -99,6 +100,7 @@ namespace E_Commerce.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
         //Get cart action method
+        [Authorize]
         public IActionResult Cart()
         {
             List<Products> products = HttpContext.Session.Get<List<Products>>("products");
