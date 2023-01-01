@@ -1,0 +1,50 @@
+﻿@{
+    ViewData["Title"] = "User Roles";
+}
+<br>
+<div class="row">
+    <div class="col-6">
+        <h2 class="text-info">User Roles</h2>
+    </div>
+    <div class="col-6 text-right">
+        <a asp-action="Create" class="btn btn-info"><i class="fa fa-plus"></i>&nbsp;New Role</a>
+    </div>
+</div>
+<br>
+<div>
+    <table class="table table-striped border">
+        <tr class="table-info">
+            <th>
+                User Name
+            </th>
+            <th>Role Name</th>
+        </tr>
+        @foreach (var item in ViewBag.UserRoles)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.RoleName</td>
+            </tr>
+        }
+    </table>
+</div>
+@section scripts
+    {
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.11.2/build/alertify.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            var save = '@TempData["Save"]'
+            if (save != '') {
+                alertify.success(save);
+            }
+            var edit = '@TempData["Edit"]'
+            if (edit != '') {
+                alertify.success(edit);
+            }
+            var delete = '@TempData["Delete"]'
+            if (delete!= '') {
+                alertify.error(delete);
+            }
+        })
+    </script>
+}

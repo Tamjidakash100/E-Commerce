@@ -14,6 +14,9 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using E_Commerce.Areas.Customer.Controllers;
+using E_Commerce.Data;
+using E_Commerce.Models;
 
 namespace E_Commerce.Areas.Identity.Pages.Account
 {
@@ -21,11 +24,13 @@ namespace E_Commerce.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private ApplicationDbContext _db;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger, ApplicationDbContext db)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _db = db;
         }
 
         /// <summary>
@@ -103,6 +108,20 @@ namespace E_Commerce.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            var userInfo = _db.ApplicationUsers.FirstOrDefault(c => c.Email.ToLower() == Input.Email.ToLower());
+            var role = (from ur in _db.UserRoles
+                           join r in _db.Roles on ur.RoleId equals r.Id
+                           where ur.UserId == userInfo.Id
+                           select new SessionUserRoleVM()
+                           {
+                               UserName = Input.Email,
+                               RoleName = r.Name
+                           }).FirstOrDefault();
+            if (role!=null)
+            {
+                HttpContext.Session.SetString("RoleName", role.RoleName);
+            }
+
             returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();

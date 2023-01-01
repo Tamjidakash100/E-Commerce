@@ -11,6 +11,9 @@ namespace E_Commerce.Models
         public string Name { get; set; }
         [Required]
         public decimal Price { get; set; }
+        [Required]
+        [StringLength(100,MinimumLength =30)]
+        public string Details { get; set; }
         public string? Image { get; set; }
         [Display(Name = "Product Color")]
         public string ProductColor { get; set; }

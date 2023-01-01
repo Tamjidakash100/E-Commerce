@@ -32,6 +32,7 @@ namespace E_Commerce.Areas.Customer.Controllers
                 var res = await _userManager.CreateAsync(users, users.PasswordHash);
                 if (res.Succeeded)
                 {
+                    var userRole = await _userManager.AddToRoleAsync(users, "User");
                     TempData["Save"] = "User Has Been Created Successfully";
                     return RedirectToAction(nameof(Index));
                 }

@@ -23,8 +23,10 @@ namespace E_Commerce.Models
         public string Email { get; set; }
         [Required]
         public string Address { get; set; }
-        [Display(Name="Order Date")]
-        public DateTime OrderDate { get; set; }
+        [Display(Name = "Order Date")]
+        public string Token { get; set;}
+        public double Total { get; set; }
+        public DateTime OrderDate { get; set; } = DateTime.Now;
 
         public virtual List<OrderDetails> OrderDetails { get; set; }
 

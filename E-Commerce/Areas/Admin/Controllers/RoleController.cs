@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Areas.Admin.Models;
 using E_Commerce.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -19,6 +20,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             _userManager = userManager;
         }
         //Get Index Action Method
+        [Authorize]
         public IActionResult Index()
         {
             var roles = _rolemanager.Roles.ToList();
@@ -26,11 +28,13 @@ namespace E_Commerce.Areas.Admin.Controllers
             return View(ViewBag.Roles);
         }
         //Get Create Action Method
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
         //Post Create Action Method
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
@@ -51,6 +55,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         //Get Edit Action Method
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             var role= await _rolemanager.FindByIdAsync(id);
@@ -64,6 +69,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             return View();
         }
         //Post Edit Action Method
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(string id, string name)
         {
@@ -90,6 +96,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         //Get Delete Action Method
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             var role = await _rolemanager.FindByIdAsync(id);
@@ -103,6 +110,7 @@ namespace E_Commerce.Areas.Admin.Controllers
             return View();
         }
         //Post Delete Action Method
+        [Authorize]
         [HttpPost]
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirm(string id)
@@ -119,12 +127,16 @@ namespace E_Commerce.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
+        //Get Assign action method
+        [Authorize]
         public IActionResult Assign()
         {
             ViewData["UserId"] = new SelectList(_db.ApplicationUsers.ToList(),"Id","UserName");
             ViewData["RoleId"] = new SelectList(_rolemanager.Roles.ToList(),"Name","Name");
             return View();
         }
+        //Post Assign action method
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Assign(AssignRolesVM assignRoles)
         {
@@ -132,6 +144,8 @@ namespace E_Commerce.Areas.Admin.Controllers
             bool exist = await _userManager.IsInRoleAsync(user, assignRoles.RoleId);
             if (exist)
             {
+                ViewData["UserId"] = new SelectList(_db.ApplicationUsers.Where(c=>c.LockoutEnd<DateTime.Now || c.LockoutEnd==null).ToList(), "Id", "UserName");
+                ViewData["RoleId"] = new SelectList(_rolemanager.Roles.ToList(), "Name", "Name");
                 ViewBag.message = "This role is already assigned to this user";
                 return View();
             }
@@ -142,6 +156,22 @@ namespace E_Commerce.Areas.Admin.Controllers
                 TempData["Save"]="User Role has been assigned";
             }
             return RedirectToAction(nameof(Index));
+        }
+        [Authorize]
+        public ActionResult AssignRoles()
+        {
+            var result = from ur in _db.UserRoles
+                         join r in _db.Roles on ur.RoleId equals r.Id
+                         join au in _db.ApplicationUsers on ur.UserId equals au.Id
+                         select new UserRoleMaping()
+                         {
+                             UserId = ur.UserId,
+                             RoleId = ur.RoleId,
+                             UserName = au.UserName,
+                             RoleName = r.Name
+                         };
+            ViewBag.UserRoles = result;
+            return View();
         }
 
     }

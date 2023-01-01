@@ -1,6 +1,7 @@
 using E_Commerce.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,12 +9,20 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+builder.Services.Configure<StripeSetting>(builder.Configuration.GetSection("PaymentSettings"));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<ApplicationDbContext>();
 builder.Services.AddControllersWithViews();
+
+builder.Services.ConfigureApplicationCookie(options =>
+    {
+        options.AccessDeniedPath = $"/Identity/Account/AccessDenied";
+        options.LoginPath = $"/Identity/Account/Login";
+        options.LogoutPath = $"/Identity/Account/Logout";
+    });
 
 //Configure session
 builder.Services.AddDistributedMemoryCache();
@@ -26,7 +35,7 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-    
+
 
 
 // Configure the HTTP request pipeline.
@@ -43,8 +52,10 @@ else
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseCors();
 
 app.UseRouting();
+StripeConfiguration.ApiKey= builder.Configuration.GetSection("PaymentSettings:SecretKey").Get<string>();
 app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();

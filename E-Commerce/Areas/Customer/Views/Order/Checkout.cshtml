@@ -1,4 +1,6 @@
 ﻿@model E_Commerce.Models.Orders
+@using Microsoft.Extensions.Options
+@inject IOptions<E_Commerce.Data.StripeSetting> Stripe
 @using E_Commerce.Utility
 @using Microsoft.AspNetCore.Http
 @inject IHttpContextAccessor HttpContextAccessor
@@ -64,15 +66,9 @@
                 </div>
                 
             </div>
-            <div class="form-group row">
-                <div class="col-4">
-                    <label asp-for="OrderDate"></label>
-                </div>
-                <div class="col-8">
-                    @*<select asp-for="TagId" asp-items="ViewBag.TagId" class="form-control"></select>*@
-                    <input asp-for="OrderDate" class="form-control" />
-                    <span asp-validation-for="OrderDate" class="text-danger"></span>
-                </div>
+
+            <input asp-for="Total" class="form-control" value="@products.Sum(c=>c.Price)" type="hidden"/>
+            <input asp-for="Token" class="StripeToken" type="hidden"/>
                 
             </div>
             
@@ -101,7 +97,12 @@
             <div class="text-end">
                 <h3 >Total Price: @products.Sum(c=>c.Price)</h3>
             
-                <input type="submit" value="Place Order" class="btn btn-success" />
+                <script src="//checkout.stripe.com/v2/checkout.js"
+                        class="stripe-button"
+                        data-key="@Stripe.Value.PublishableKey"
+                        data-loacale="auto"
+                        data-description="Sample Charge">
+                </script>
             </div>
         </div>
         
