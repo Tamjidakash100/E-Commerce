@@ -12,6 +12,7 @@ namespace E_Commerce.Models
         public int ProductId { get; set; }
         [ForeignKey("OrderId")]
         public Orders Order { get; set; }
+        public int Quantity { get; set; }
         [ForeignKey("ProductId")]
         public Products Product { get; set; }
     }

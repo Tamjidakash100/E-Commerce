@@ -16,6 +16,7 @@
                 <th>Price</th>
                 <th>Category</th>
                 <th>Product Color</th>
+                <th>Quantity</th>
                 <th></th>
             </tr>
         </thead>
@@ -29,6 +30,7 @@
                     <td>@item.Price</td>
                     <td>@item.Category.CategoryName</td>
                     <td>@item.ProductColor</td>
+                    <td>@item.Quantity</td>
                     <td>
                         <a asp-action="Remove" asp-route-id="@item.Id" asp-controller="Home" asp-area="Customer" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
                     </td>
@@ -42,7 +44,10 @@
         <a asp-action="Index" asp-controller="Home" class="btn btn-info">Back To Home</a>
     </div>
     <div class="col-6">
-        <h3 class="text-end">Grand Total : @Model.Sum(c=>c.Price) Taka</h3>
-        <a asp-action="Checkout" asp-controller="Order" class="btn btn-info" style="float:right;">Checkout</a>
+        <h3 class="text-end">Grand Total : @Model.Sum(c=>c.Price*c.Quantity) USD</h3>
+        @if (Model.Sum(c => c.Price)>0)
+        {
+            <a asp-action="Checkout" asp-controller="Order" class="btn btn-info" style="float:right;">Checkout</a>
+        }
     </div>
 </div>

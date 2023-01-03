@@ -25,14 +25,15 @@ namespace E_Commerce.Areas.Customer.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Create(ApplicationUsers users)
+        public async Task<IActionResult> Create(ApplicationUsers userIP)
         {
             if(ModelState.IsValid)
             {
-                var res = await _userManager.CreateAsync(users, users.PasswordHash);
+                var user= new ApplicationUsers { UserName= userIP.Email, Email= userIP.Email, FirstName = userIP.FirstName, LastName=userIP.LastName};
+                var res = await _userManager.CreateAsync(user, userIP.PasswordHash);
                 if (res.Succeeded)
                 {
-                    var userRole = await _userManager.AddToRoleAsync(users, "User");
+                    var userRole = await _userManager.AddToRoleAsync(user, "User");
                     TempData["Save"] = "User Has Been Created Successfully";
                     return RedirectToAction(nameof(Index));
                 }

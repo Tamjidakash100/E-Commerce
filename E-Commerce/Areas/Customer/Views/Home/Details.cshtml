@@ -18,7 +18,7 @@
 
 <h2 class="text-info">@Model.Name Details</h2>
 <form asp-action="details" method="post" enctype="multipart/form-data">
-    <div class="p-4 rounded border row">
+    <div class="p-4 rounded border row border-info">
         <div asp-validation-summary="ModelOnly" class="text-danger">
         </div>
         <div class="col-8">
@@ -67,10 +67,12 @@
                 <div class="col-4">
                     <label>Quantity</label>
                 </div>
-                <div class="col-8">
-                    <input type="number" name="Quantity" style="width:50px" value="1"/>
-                </div>
-                <span asp-validation-for="Category.CategoryName" class="text-danger"></span>
+                @if (Model.IsAvailable)
+                {
+                    <div class="col-8">
+                        <input type="number" asp-for="Quantity" style="width:50px" value="1" required/>
+                    </div>
+                }
             </div>
 
             <div class="form-group row">
@@ -78,14 +80,21 @@
                     
                 </div>
                 <div class="col-8">
-                    @if(product!=null)
+                    @if (Model.IsAvailable == true)
                     {
-                        <button type="submit" asp-action="Remove" asp-route-id="@Model.Id" class="btn btn-danger">Remove From Cart</button>
+                        @if (product != null)
+                        {
+                            <button type="submit" asp-action="Remove" asp-route-id="@Model.Id" class="btn btn-danger">Remove From Cart</button>
+                        }
+                        else
+                        {
+                            <input type="submit" value="Add To Cart" class="btn btn-info" />
+                        }
+
                     }
-                    else{
-                        <input type="submit" value="Add To Cart" class="btn btn-info" />
-                    }
-                    
+                    else 
+                    {<p class="text-danger">This product is not available</p>}
+
                 </div>
                 
             </div>

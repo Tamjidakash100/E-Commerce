@@ -31,5 +31,7 @@ namespace E_Commerce.Models
         public int TagId { get; set; }
         [ForeignKey("TagId")]
         public virtual Tags? Tags { get; set; }
+        [NotMapped]
+        public int Quantity { get; set; }
     }
 }

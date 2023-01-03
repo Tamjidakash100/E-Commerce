@@ -43,7 +43,7 @@ namespace E_Commerce.Areas.Customer.Controllers
         //Post Details action method
         [HttpPost]
         [ActionName("Details")]
-        public IActionResult ProductDetails(int? id)
+        public IActionResult ProductDetails(int? id, Products getproduct)
         {
             List<Products> products = new List<Products>();
             if (id==null)
@@ -51,10 +51,13 @@ namespace E_Commerce.Areas.Customer.Controllers
                 return NotFound();
             }
             var product = _db.Products.Include(c => c.Category).FirstOrDefault(c => c.Id==id);
+            
             if (product==null)
             {
                 return NotFound();
             }
+            product.Quantity = getproduct.Quantity;
+            var PQuantity = 
             products = HttpContext.Session.Get<List<Products>>("products");
             if (products==null)
             {

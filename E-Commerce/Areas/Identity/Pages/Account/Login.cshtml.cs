@@ -108,21 +108,22 @@ namespace E_Commerce.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
+            
+
+            returnUrl ??= Url.Content("~/");
             var userInfo = _db.ApplicationUsers.FirstOrDefault(c => c.Email.ToLower() == Input.Email.ToLower());
             var role = (from ur in _db.UserRoles
-                           join r in _db.Roles on ur.RoleId equals r.Id
-                           where ur.UserId == userInfo.Id
-                           select new SessionUserRoleVM()
-                           {
-                               UserName = Input.Email,
-                               RoleName = r.Name
-                           }).FirstOrDefault();
+                        join r in _db.Roles on ur.RoleId equals r.Id
+                        where ur.UserId == userInfo.Id
+                        select new SessionUserRoleVM()
+                        {
+                            UserName = Input.Email,
+                            RoleName = r.Name
+                        }).FirstOrDefault();
             if (role!=null)
             {
                 HttpContext.Session.SetString("RoleName", role.RoleName);
             }
-
-            returnUrl ??= Url.Content("~/");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
