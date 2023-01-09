@@ -65,6 +65,15 @@
             </div>
             <div class="form-group row">
                 <div class="col-4">
+                    <label>Product Description</label>
+                </div>
+                <div class="col-8">
+                    <p>@Model.Details</p>
+                </div>
+                <span asp-validation-for="Category.CategoryName" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-4">
                     <label>Quantity</label>
                 </div>
                 @if (Model.IsAvailable)

@@ -132,6 +132,7 @@ namespace E_Commerce.Areas.Identity.Pages.Account
 
                 if (result.Succeeded)
                 {
+                    var userRole = await _userManager.AddToRoleAsync(user, "User");
                     _logger.LogInformation("User created a new account with password.");
 
                     var userId = await _userManager.GetUserIdAsync(user);

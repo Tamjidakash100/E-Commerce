@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Data;
 using E_Commerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -7,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 namespace E_Commerce.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public class UserController : Controller
     {
         ApplicationDbContext _db;

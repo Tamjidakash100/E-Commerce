@@ -8,6 +8,12 @@
     {
         orders = new List<Products>();
     }
+    decimal? offer = HttpContextAccessor.HttpContext.Session.GetInt32("offer");
+    if (offer==null)
+    {
+        offer =0;
+    }
+     
 }
 @{
     ViewData["Title"] = "Receipt";
@@ -34,15 +40,34 @@
                 }
                 <td>@item.Name</td>
                 <td>@item.Quantity</td>
-                <td>@item.Price</td>
-                <td>@total</td>
+                <td>$@item.Price</td>
+                <td>$@total</td>
             </tr>
         }
+        
         <tr>
+
+            <td>Voucher</td>
+            <td></td>
+            <td></td>
+            <td>-@offer.00</td>
+        </tr>
+        <tr>
+
+            <td>Shipping Cost</td>
+            <td></td>
+            <td></td>
+            <td>3.00</td>
+        </tr>
+        <tr>
+            @{
+                decimal? gTotal = @orders.Sum(c => c.Price * c.Quantity) - offer+3;
+            }
+            
             <td><strong>Grand Total:</strong></></td>
             <td></td>
             <td></td>
-            <td><strong>@orders.Sum(c=>c.Price*c.Quantity)</strong></td>
+            <td><strong>$@gTotal</strong></td>
         </tr>
         
     </tbody>

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public class RoleController : Controller
     {
         UserManager<IdentityUser> _userManager;
@@ -20,7 +21,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             _userManager = userManager;
         }
         //Get Index Action Method
-        [Authorize]
         public IActionResult Index()
         {
             var roles = _rolemanager.Roles.ToList();
@@ -34,7 +34,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             return View();
         }
         //Post Create Action Method
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {
@@ -55,7 +54,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         //Get Edit Action Method
-        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             var role= await _rolemanager.FindByIdAsync(id);
@@ -69,7 +67,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             return View();
         }
         //Post Edit Action Method
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Edit(string id, string name)
         {
@@ -96,7 +93,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         //Get Delete Action Method
-        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             var role = await _rolemanager.FindByIdAsync(id);
@@ -110,7 +106,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             return View();
         }
         //Post Delete Action Method
-        [Authorize]
         [HttpPost]
         [ActionName("Delete")]
         public async Task<IActionResult> DeleteConfirm(string id)
@@ -128,7 +123,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
         //Get Assign action method
-        [Authorize]
         public IActionResult Assign()
         {
             ViewData["UserId"] = new SelectList(_db.ApplicationUsers.ToList(),"Id","UserName");
@@ -136,7 +130,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             return View();
         }
         //Post Assign action method
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Assign(AssignRolesVM assignRoles)
         {
@@ -157,7 +150,6 @@ namespace E_Commerce.Areas.Admin.Controllers
             }
             return RedirectToAction(nameof(Index));
         }
-        [Authorize]
         public ActionResult AssignRoles()
         {
             var result = from ur in _db.UserRoles

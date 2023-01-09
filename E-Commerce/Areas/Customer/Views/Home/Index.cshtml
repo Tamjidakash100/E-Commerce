@@ -4,12 +4,22 @@
 @{
     ViewData["Title"] = "Home Page";
 }
-
-<br />
 <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-2 sidebar">
+        <nav>       
+            <ul>
+               <li><h3 class="text-white">Category List</h3></li>
+                @foreach (var item in ViewBag.CatList)
+                {
+                    <li><a asp-action="ProductsByCategory" asp-route-id="@item.Id">@item.CategoryName</a></li>
+                }
+            </ul>
+        </nav>
+
+    </div>
+    <div class="col-md-10 products">
         <div class="card border-info mb-3">
-            <div class="card-header">Products</div>
+            <div class="card-header text-white" style="background-color:rgb(2, 26, 26);">Products</div>
             <div class="card-body text-primary">
                 <div class="row">
                 @foreach (var product in Model)

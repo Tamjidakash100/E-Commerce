@@ -38,14 +38,36 @@
             }
         </tbody>
     </table>
+    @if (Model.Sum(c => c.Price*c.Quantity)>500 && ViewBag.offer==null)
+    {
+        <form asp-action="Cart" method="post">
+            @ViewBag.message
+            <label>Voucher</label>
+            <input id="token" name="token" class="form-control" />
+            <button>Add Voucher</button>
+        </form>
+        
+           
+    }
 </div>
 <div class="row">
     <div class="col-6">
         <a asp-action="Index" asp-controller="Home" class="btn btn-info">Back To Home</a>
     </div>
     <div class="col-6">
-        <h3 class="text-end">Grand Total : @Model.Sum(c=>c.Price*c.Quantity) USD</h3>
-        @if (Model.Sum(c => c.Price)>0)
+        @{
+            if (ViewBag.offer == null){
+                ViewBag.offer = 0;
+            }
+                decimal total = Model.Sum(c => c.Price * c.Quantity) - ViewBag.offer+3;
+        }
+        @if(ViewBag.offer>0){
+        <h3 class="text-end text-success">Voucher Deducted : @ViewBag.offer USD</h3>
+        }
+        <h3 class="text-end">Shipping Cost : 3.00 USD</h3>
+        <h3 class="text-end">Grand Total : @total USD</h3>
+        
+        @if (total>0)
         {
             <a asp-action="Checkout" asp-controller="Order" class="btn btn-info" style="float:right;">Checkout</a>
         }

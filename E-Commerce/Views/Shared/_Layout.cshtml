@@ -27,66 +27,60 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css" />
     <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <style>
-        header{
-            background: rgb(2, 26, 26);
-        }
-        .logo{
-            color: #fff;
-            font-size: 32px;
-            font-weight: 700;
-        }
-        .menu ul li{
-            margin-left: 10px;
-        }
-
-        .menu ul li:hover{
-            background: #494db5;
-            border-radius: 7px;
-        }
-
-        .menu ul li a{
-            color : #fff;
-        }
-        .menu ul li a:hover{
-            color : #fff;
-        }
-        footer{
-            background: rgb(2, 26, 26);
-        }
+        
     </style>
 </head>
 
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow">
             <div class="container-fluid">
-                <a class="navbar-brand logo" asp-area="" asp-controller="Home" asp-action="Index">E-Commerce</a>
+                <a class="navbar-brand logo" style="margin-top: -20px;" asp-area="" asp-controller="Home" asp-action="Index">E-Commerce</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="menu navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        
-                        
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Tags" asp-action="Index">Tag</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
-                        </li>
+                        @if(userRole=="Admin" || userRole=="Super Admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Tags" asp-action="Index">Tag</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Customer" asp-controller="User" asp-action="Index">User</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Products" asp-action="Index">Products</a>
+                            </li><li class="nav-item">
+                                <a class="nav-link" asp-area="Admin" asp-controller="Role" asp-action="Index">Role</a>
+                            </li>
+                        }
+                        
                        
                         <li class="nav-item">
                             <a class=" mt-1 nav-link" asp-area="Customer" asp-controller="Home" asp-action="Cart">
                                 <i class="fas fa-shopping-cart">@cart_count</i>
                             </a>
                         </li>
+
+                        <form asp-area="Customer" asp-controller="Home" asp-action="Search" method="get" enctype="multipart/form-data">
+
+                            <ul class="navbar-nav flex-grow-1">
+                                <li class="nav-item"><select id="id" name="id" asp-items="@ViewBag.productTypeId" class="form-control" style="width:150px"></select></li>
+                                <li class="nav-item"><input id="query" name="query" style="height: 38px" /></li>
+                                <li class="nav-item"><button type="submit" class="btn btn-primary">Search</button></li>
+                            </ul>
+                        
+
+                        </form>
+                        
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

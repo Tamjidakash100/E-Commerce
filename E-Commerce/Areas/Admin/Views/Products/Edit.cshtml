@@ -17,6 +17,7 @@
                 </div>
                 <div class="col-8">
                     <input type="hidden" asp-for="Id" />
+                    <input type="hidden" name="p_image" id="p_image" value="@Model.Image" />
                     <input asp-for="Name" class="form-control" />
                 </div>
                 <span asp-validation-for="Name" class="text-danger"></span>

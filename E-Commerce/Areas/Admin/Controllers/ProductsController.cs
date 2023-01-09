@@ -1,5 +1,6 @@
 ﻿using E_Commerce.Data;
 using E_Commerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public class ProductsController : Controller
     {
         private Data.ApplicationDbContext _db;
@@ -102,11 +104,12 @@ namespace E_Commerce.Areas.Admin.Controllers
         }
         //Edit post action method
         [HttpPost]
-        public async Task<IActionResult> Edit(Products products, IFormFile? image)
+        public async Task<IActionResult> Edit(Products products, IFormFile? image, string p_image)
         {
             if (ModelState.IsValid)
             {
-                var match = _db.Products.FirstOrDefault(c => c.Name==products.Name);
+                
+                var match = _db.Products.FirstOrDefault(c => c.Name==products.Name && c.Id!=products.Id);
                 if (match!=null)
                 {
                     ViewBag.message ="This Product Already Exists!!!";
@@ -124,7 +127,7 @@ namespace E_Commerce.Areas.Admin.Controllers
 
                 if (image==null)
                 {
-                    products.Image="Images/No-image-found.jpg";
+                    products.Image=p_image;
                 }
                 _db.Products.Update(products);
                 await _db.SaveChangesAsync();

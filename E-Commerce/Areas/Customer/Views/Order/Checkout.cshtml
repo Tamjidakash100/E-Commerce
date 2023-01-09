@@ -11,6 +11,10 @@
     {
         products = new List<Products>();
     }
+    int? offer = HttpContextAccessor.HttpContext.Session.GetInt32("offer");
+    if (offer==null){
+        offer =0;
+    }
 }
 @{
     ViewData["Title"] = "Order Details";
@@ -67,8 +71,10 @@
 
                 
             </div>
-
-            <input asp-for="Total" class="form-control" value="@products.Sum(c=>c.Price*c.Quantity)" type="hidden"/>
+            @{
+                decimal? total = products.Sum(c => c.Price * c.Quantity) - offer+3;
+            }
+            <input asp-for="Total" class="form-control" value="@total" type="hidden"/>
             <input asp-for="Token" class="StripeToken" type="hidden"/>
                 
             </div>
@@ -91,8 +97,8 @@
                     <input asp-for="ShipTo" class="form-control" />
                     <span asp-validation-for="ShipTo" class="text-danger"></span>
                 </div>
-                
             </div>
+            
          </div>
     </div>
         <div class="col-6">
@@ -119,10 +125,15 @@
                     }
                 </tbody>
             </table>
+            
             <div class="text-end">
-                <h3 >Total Price: $ @products.Sum(c=>c.Price*c.Quantity)</h3>
+                @if(offer>0){
+                    <h3 >Voucher Deducted: $ @offer</h3>
+                }
+                <h3 >Shipping Cost: $ 3.00</h3>
+                <h3 >Total Price: $ @total</h3>
                 <h3 class="text-danger">@ViewBag.message</h3>
-            @if(products.Sum(c=>c.Price*c.Quantity)>0){
+            @if(total>0){
                 <script src="//checkout.stripe.com/v2/checkout.js"
                         class="stripe-button"
                         data-key="@Stripe.Value.PublishableKey"
@@ -130,6 +141,7 @@
                         data-description="Sample Charge">
                 </script>
             }
+
             </div>
         </div>
         

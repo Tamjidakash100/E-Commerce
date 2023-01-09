@@ -1,10 +1,12 @@
 ﻿using E_Commerce.Data;
 using E_Commerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public class CategoryController : Controller
     {
         private ApplicationDbContext _db;

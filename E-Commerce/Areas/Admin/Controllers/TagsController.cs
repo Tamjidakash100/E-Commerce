@@ -1,11 +1,13 @@
 ﻿using E_Commerce.Data;
 using E_Commerce.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Drawing.Printing;
 
 namespace E_Commerce.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin, Super Admin")]
     public class TagsController : Controller
     {
         private ApplicationDbContext _db;

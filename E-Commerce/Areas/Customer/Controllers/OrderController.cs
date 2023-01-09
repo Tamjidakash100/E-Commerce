@@ -1,6 +1,7 @@
 ﻿using E_Commerce.Data;
 using E_Commerce.Models;
 using E_Commerce.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,6 +14,7 @@ using System.Security.Claims;
 namespace E_Commerce.Areas.Customer.Controllers
 {
     [Area("Customer")]
+    [Authorize]
     public class OrderController : Controller
     {
         private ApplicationDbContext _db;
@@ -28,8 +30,9 @@ namespace E_Commerce.Areas.Customer.Controllers
         //Post Checkout action method
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Checkout(Orders order, string stripeEmail, string stripeToken)
+        public async Task<IActionResult> Checkout(Orders order, string stripeEmail, string stripeToken, string? token)
         {
+            
             var customers = new CustomerService();
             var charges = new ChargeService();
 
@@ -40,7 +43,8 @@ namespace E_Commerce.Areas.Customer.Controllers
             });
             var charge = charges.Create(new ChargeCreateOptions
             {
-                Amount = Convert.ToInt32(order.Total*100),
+
+                Amount = Convert.ToInt32((order.Total)*100),
                 Description="Test Payment",
                 Currency="usd",
                 Customer = customer.Id
