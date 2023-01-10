@@ -1,0 +1,11 @@
+﻿
+<form asp-area="Customer" asp-controller="Home" asp-action="Search" method="get" enctype="multipart/form-data">
+
+    <ul class="navbar-nav flex-grow-1">
+        <li class="nav-item"><select id="id" name="id" asp-items="@ViewBag.CategoryList" class="form-control" style="width:150px"></select></li>
+        <li class="nav-item"><input id="query" name="query" style="height: 38px" /></li>
+        <li class="nav-item"><button type="submit" class="btn btn-primary">Search</button></li>
+    </ul>
+
+
+</form>

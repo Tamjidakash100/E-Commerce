@@ -29,7 +29,7 @@ namespace E_Commerce.Areas.Customer.Controllers
         {
             List<Category> categories= _db.Categories.ToList();
             ViewBag.CatList= categories;
-            ViewData["productTypeId"]=new SelectList(_db.Categories.ToList(), "Id", "CategoryName");
+            ViewData["categories"]=new SelectList(_db.Categories.ToList(), "Id", "CategoryName");
             return View(_db.Products.Include(c=> c.Category).Include(c=>c.Tags).ToList().ToPagedList(pageNumber:page??1,pageSize:10));
 
         }

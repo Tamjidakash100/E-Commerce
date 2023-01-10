@@ -45,6 +45,7 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
+                        
                         @if(userRole=="Admin" || userRole=="Super Admin")
                         {
                             <li class="nav-item">
@@ -62,6 +63,7 @@
                                 <a class="nav-link" asp-area="Admin" asp-controller="Role" asp-action="Index">Role</a>
                             </li>
                         }
+                        @await Component.InvokeAsync("Categories")
                         
                        
                         <li class="nav-item">
@@ -70,16 +72,7 @@
                             </a>
                         </li>
 
-                        <form asp-area="Customer" asp-controller="Home" asp-action="Search" method="get" enctype="multipart/form-data">
-
-                            <ul class="navbar-nav flex-grow-1">
-                                <li class="nav-item"><select id="id" name="id" asp-items="@ViewBag.productTypeId" class="form-control" style="width:150px"></select></li>
-                                <li class="nav-item"><input id="query" name="query" style="height: 38px" /></li>
-                                <li class="nav-item"><button type="submit" class="btn btn-primary">Search</button></li>
-                            </ul>
                         
-
-                        </form>
                         
                     </ul>
                     <partial name="_LoginPartial" />
