@@ -59,17 +59,17 @@ namespace E_Commerce.Areas.Customer.Controllers
                 List<Products> products = HttpContext.Session.Get<List<Products>>("products");
                 OrderDetails orderDetails = new OrderDetails();
                 
-                _db.Orders.Add(order);
-                await _db.SaveChangesAsync();
-                var orderId = _db.Orders.FirstOrDefault(c => c.OrderNo == order.OrderNo);
-                foreach (var i in products)
-                {
-                    orderDetails.ProductId = i.Id;
-                    orderDetails.Quantity = i.Quantity;
-                    orderDetails.OrderId = orderId.Id;
-                    _db.OrderDetails.Add(orderDetails);
-                    _db.SaveChanges();
-                }
+                //_db.Orders.Add(order);
+                //await _db.SaveChangesAsync();
+                //var orderId = _db.Orders.FirstOrDefault(c => c.OrderNo == order.OrderNo);
+                //foreach (var i in products)
+                //{
+                //    orderDetails.ProductId = i.Id;
+                //    orderDetails.Quantity = i.Quantity;
+                //    orderDetails.OrderId = orderId.Id;
+                //    _db.OrderDetails.Add(orderDetails);
+                //    _db.SaveChanges();
+                //}
                 ViewBag.orderNo= order.OrderNo;
                
                 HttpContext.Session.Set("order", products);

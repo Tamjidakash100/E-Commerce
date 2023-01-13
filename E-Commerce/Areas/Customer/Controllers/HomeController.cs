@@ -72,7 +72,7 @@ namespace E_Commerce.Areas.Customer.Controllers
             }
             products.Add(product);
             HttpContext.Session.Set("products", products);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Cart));
         }
         
         public IActionResult Remove(int? id)

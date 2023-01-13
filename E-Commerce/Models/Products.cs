@@ -12,7 +12,7 @@ namespace E_Commerce.Models
         [Required]
         public decimal Price { get; set; }
         [Required]
-        [StringLength(100,MinimumLength =30)]
+        [StringLength(10000,MinimumLength =30)]
         public string Details { get; set; }
         public string? Image { get; set; }
         [Display(Name = "Product Color")]
